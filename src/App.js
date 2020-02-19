@@ -7,6 +7,13 @@ const About = () => <p>This challenge is about tabs!</p>;
 const Contact = () => <p>Feel free to contact us!</p>;
 const Error = () => <p>Something went <strong>wrong</strong>!</p>;
 
+const subpages = {
+  home: <Home/>,
+  about: <About/>,
+  contact: <Contact/>,
+  error: <Error/>
+}
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -16,18 +23,19 @@ class App extends Component {
   }
 
   getTabContent() {
-    switch(this.state.activeId) {
-      case 'home':
-        return <Home />;
-      default:
-        return <Error />;
-    }
+    return subpages[this.state.activeId]
+  }
+
+  handleChangeTab = (event) => {
+    const buttonId = event.target.id;
+    this.setState({ activeId: buttonId });
   }
 
   render() {
+    const {activeId} = this.state;
     return (
       <div className="App">
-        <TabSelector />
+        <TabSelector activeId={activeId} handleChangeTab={this.handleChangeTab} />
         <div className="App-content">
           {
             this.getTabContent()
